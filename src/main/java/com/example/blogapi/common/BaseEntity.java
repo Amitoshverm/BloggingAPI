@@ -6,7 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.util.Date;
 
 @MappedSuperclass
-public class baseEntity {
+public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
