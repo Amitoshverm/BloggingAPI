@@ -4,7 +4,10 @@ import com.example.blogapi.common.BaseEntity;
 import com.example.blogapi.users.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+
+import java.util.List;
 
 @Entity(name = "articles")
 public class ArticleEntity extends BaseEntity {
@@ -19,4 +22,7 @@ public class ArticleEntity extends BaseEntity {
 
     @ManyToOne
     UserEntity author;
+
+    @ManyToMany
+    List<UserEntity> likedBy;
 }

@@ -1,11 +1,11 @@
 package com.example.blogapi.users;
 
+import com.example.blogapi.articles.ArticleEntity;
 import com.example.blogapi.common.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.apachecommons.CommonsLog;
+import jakarta.persistence.*;
+
+
+import java.util.List;
 
 @Entity(name = "user")
 public class UserEntity extends BaseEntity {
@@ -16,6 +16,18 @@ public class UserEntity extends BaseEntity {
      String password; // TODO: hash this
      String bio;
      String image;
+     @ManyToMany
+     List<ArticleEntity> favorite;
 
+     @ManyToMany
+     @JoinTable(
+             name = "user_follows",
+             joinColumns = @JoinColumn(name = "follower_id"),
+             inverseJoinColumns = @JoinColumn(name = "following_id")
+     )
+     List<UserEntity> following;
+
+     @ManyToMany(mappedBy = "following")
+     List<UserEntity> followers;
 
 }
