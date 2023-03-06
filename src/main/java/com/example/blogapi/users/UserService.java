@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
 
+    private final ModelMapper modelMapper;
+
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public UserResponseDTO createUser(CreateUserDTO createUserDTO) {
         // TODO: Encrypt password
