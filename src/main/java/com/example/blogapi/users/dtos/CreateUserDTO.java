@@ -14,4 +14,5 @@ public class CreateUserDTO {
     String email;
     String username;
     String password;
+
 }
