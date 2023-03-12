@@ -5,6 +5,7 @@ import com.example.blogapi.users.dtos.LoginUserDTO;
 import com.example.blogapi.users.dtos.UserResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,17 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserService {
 
     private final UserRepository userRepository;
-
-
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(@Autowired UserRepository userRepository,
+                       @Autowired ModelMapper modelMapper,
+                       @Autowired PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponseDTO createUser(CreateUserDTO createUserDTO) {
-        // TODO: Encrypt password
+        // TODO: Encrypt password ✅
         // TODO: check username already exist or not
         // TODO: validate email
 
