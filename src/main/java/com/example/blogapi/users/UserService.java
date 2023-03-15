@@ -1,5 +1,6 @@
 package com.example.blogapi.users;
 
+import com.example.blogapi.security.jwt.JWTService;
 import com.example.blogapi.users.dtos.CreateUserDTO;
 import com.example.blogapi.users.dtos.LoginUserDTO;
 import com.example.blogapi.users.dtos.UserResponseDTO;
@@ -16,23 +17,25 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JWTService jwtService;
 
-    public UserService(@Autowired UserRepository userRepository,
-                       @Autowired ModelMapper modelMapper,
-                       @Autowired PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, JWTService jwtService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public UserResponseDTO createUser(CreateUserDTO createUserDTO) {
         // TODO: Encrypt password ✅
-        // TODO: check username already exist or not
         // TODO: validate email
+        // TODO: check username already exist or not
 
         var newUserEntity = modelMapper.map(createUserDTO, UserEntity.class);
+        newUserEntity.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
         var savedUser = userRepository.save(newUserEntity);
         var userResponseDTO = modelMapper.map(savedUser, UserResponseDTO.class);
+        userResponseDTO.setToken(jwtService.createJWT(savedUser.getId()));
         return userResponseDTO;
 
          // If we did not have ModelMapper then -
@@ -51,7 +54,17 @@ public class UserService {
 
     public UserResponseDTO loginUser(LoginUserDTO loginUserDTO){
         var userEntity = userRepository.findByUsername(loginUserDTO.getUsername());
+        if (userEntity == null) {
+            throw new IllegalArgumentException(loginUserDTO.getUsername());
+        }
         // TODO : implement password matching
-        return null;
+        var passMatch = passwordEncoder.matches(loginUserDTO.getPassword(), userEntity.getPassword());
+        if (!passMatch) {
+            throw new IllegalArgumentException("Incorrect Password");
+        }
+        var userResponseDTO = modelMapper.map(userEntity, UserResponseDTO.class);
+
+        return userResponseDTO;
     }
+    public static class UserNotFoundException extends IllegalArgumentException{}
 }

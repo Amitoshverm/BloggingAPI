@@ -22,12 +22,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // TODO: implement security later
-    //implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-crypto'
     implementation 'org.modelmapper:modelmapper:3.0.0'
     implementation 'com.auth0:java-jwt:4.3.0'
-
-    implementation 'com.auth0:java-jwt:4.3.0'
+    implementation 'org.springframework.security:spring-security-config:6.0.2'
+    implementation 'org.jbundle.config.web:org.jbundle.config.web.httpweb:1.0.10'
+    implementation 'org.jbundle.config.web:org.jbundle.config.web.httpservice:1.0.10'
+    implementation 'org.springframework.security:spring-security-web:6.0.2'
+    implementation 'org.jbundle.config.web:jbundle-config-web-reactor:1.0.10'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
